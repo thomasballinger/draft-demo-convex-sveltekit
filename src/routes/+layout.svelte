@@ -4,24 +4,11 @@
 	import { env } from '$env/dynamic/public';
 	import { browser } from '$app/environment';
 
-	import { ConvexReactClient } from 'convex/react';
+	import { ConvexClient } from 'convex/browser';
 
 	import ConvexProvider from '../lib/ConvexProvider.svelte';
 
-	const client = browser ? new ConvexReactClient(env.PUBLIC_CONVEX_URL!) : {
-		// no-op ConvexReactClient used for server-side rendering
-		watchQuery() {
-			return {
-				onUpdate() {},
-				localQueryResult() {}
-			}
-		},
-		close() {}
-	} as unknown as ConvexReactClient;
-
-	import type { PageData } from './$types';
-
-	export let data: PageData;
+	const client = new ConvexClient(env.PUBLIC_CONVEX_URL!, {disabled: !browser});
 </script>
 
 <div class="app">
